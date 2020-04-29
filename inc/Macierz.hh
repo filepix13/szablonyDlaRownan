@@ -18,12 +18,6 @@ class Macierz
   //Deklaracja konstruktora
   Macierz();
 
-  //Deklaracja konstruktora parametrycznego(3 wektory)
-  Macierz(Wektor<TYP,ROZMIAR> Wek1, Wektor<TYP,ROZMIAR> Wek2, Wektor<TYP,ROZMIAR> Wek3);
-
-  //Deklaracja konstruktora parametrycznego(9 liczb rzeczywistych)
-  Macierz(double a, double b, double c, double d, double e, double f, double g, double h, double i);
-
   //Deklaracja przeciążenia operatora indeksującego(const)
   const Wektor<TYP,ROZMIAR> & operator[] (int indeks) const;
 
@@ -38,9 +32,6 @@ class Macierz
 
   //Deklaracja funkcji transponującej macierz(const)
   Macierz transpozycja2() const;
-
-  //Deklaracja funkcji transponującej macierz
-  void transpozycja();
 
   //Deklaracja funkcji obliczającej wyznacznik macierzy(const)
   TYP Wyznacznik() const;

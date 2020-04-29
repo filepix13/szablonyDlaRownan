@@ -19,15 +19,23 @@ struct  LZespolona {
   double   im;    /*! Pole repezentuje czesc urojona. */
 
   public:
+
+  //Deklaracja funkcji przypisującej wartość części rzeczywistej liczy zespolonej
   LZespolona operator = (double a);
+
+  //Deklaracja funkcji sumującej liczby zepolone
   LZespolona operator += (LZespolona Z);
-  LZespolona operator * (double d);
+
+  //Deklaracja funkcji mnożącej liczbę zespoloną z liczbą rzeczywistą
+  LZespolona operator * (double d) const;
+
+  //Deklaracja funkcji mnożącej liczby zepolone
   LZespolona operator *= (LZespolona Z);
+
+  //Deklaracja funkcji porównującej dwie liczby zespolone
   bool operator == (double d);
 
 };
-
-LZespolona operator / (double d, LZespolona Z);
 
 //Deklaracja funkcji obliczającej sprzeżenie liczby zespolonej
 LZespolona Sprzezenie(LZespolona);

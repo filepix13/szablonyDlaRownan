@@ -25,46 +25,6 @@ Macierz<TYP,ROZMIAR>::Macierz()
 
 
 /* 
-    Konstuktor parametryczny zmiennej Wektor
-    Argumenty:
-        this
-        Wek1, Wek2, Wek3 - wektory wstawiane do tabeli tab
-    Zwraca:
-        this
-*/
-template<class TYP, int ROZMIAR>
-Macierz<TYP,ROZMIAR>::Macierz(Wektor<TYP,ROZMIAR> Wek1, Wektor<TYP,ROZMIAR> Wek2, Wektor<TYP,ROZMIAR> Wek3)
-{
-    tab[0] = Wek1;
-    tab[1] = Wek2;
-    tab[2] = Wek3;
-}
-
-
-/* 
-    Konstuktor parametryczny zmiennej Wektor
-    Argumenty:
-        this
-        a, b, c, d, e, f, g, h, i - liczby rzeczywiste podstawiane do tabeli tab
-    Zwraca:
-        this
-*/
-template<class TYP, int ROZMIAR>
-Macierz<TYP,ROZMIAR>::Macierz(double a, double b, double c, double d, double e, double f, double g, double h, double i)
-{
-    tab[0][0] = a;
-    tab[0][1] = b;
-    tab[0][2] = c;
-    tab[1][0] = d;
-    tab[1][1] = e;
-    tab[1][2] = f;
-    tab[2][0] = g;
-    tab[2][1] = h;
-    tab[2][2] = i;
-}
-
-
-/* 
     Funkcja ta przeciąża operator indeksujący
     Argumenty:
         this
@@ -167,24 +127,7 @@ Macierz<TYP,ROZMIAR> Macierz<TYP,ROZMIAR>::transpozycja2() const
 
 
 /* 
-    Funkcja ta transponuje macierz
-    Argumenty:
-        this
-    Zwraca:
-        this
-*/
-template<class TYP, int ROZMIAR>
-void Macierz<TYP,ROZMIAR>::transpozycja()
-{
-    std::swap(this->tab[0][1], this->tab[1][0]);
-    std::swap(this->tab[0][2], this->tab[2][0]);
-    std::swap(this->tab[2][1], this->tab[1][2]);
-}
-
-
-
-/* 
-    Funkcja ta oblicza wyznacznik macierzy metodą Laplaca
+    Funkcja ta oblicza wyznacznik macierzy metodą Gaussa
     Argumenty:
         this
     Zwraca:
@@ -199,7 +142,7 @@ TYP Macierz<TYP,ROZMIAR>::Wyznacznik() const
     d = 1;
     M = *this;
 
-    for(int i=0, x=ROZMIAR-1; i<ROZMIAR; i++, x--)
+    for(int i=0, x=ROZMIAR-1; i<ROZMIAR; i++, x--)  /* Przekształcamy macierz, w macierz trójkątną górną */
     {   
         for(int j=0; j<x; j++)
         {
@@ -209,9 +152,9 @@ TYP Macierz<TYP,ROZMIAR>::Wyznacznik() const
         }
     }
 
-    for(int i=0; i<ROZMIAR; i++)
+    for(int i=0; i<ROZMIAR; i++)    /* Obliczamy wyznacznik mnożąc liczby po przekątnej*/
     {
-        d *= M[i][i];
+        d *= M[i][i];       
     }
 
     return d;
@@ -219,18 +162,18 @@ TYP Macierz<TYP,ROZMIAR>::Wyznacznik() const
 
 
 /* 
-    Funkcja ta tworzy macierz odwrotną
+    Funkcja ta tworzy macierz odwrotną metodą Gaussa
     Argumenty:
         this
     Zwraca:
-        Mac - macierz odwócona
+        Jed - macierz odwócona
 */
 template<class TYP, int ROZMIAR>
 Macierz<TYP,ROZMIAR> Macierz<TYP,ROZMIAR>::odwrotnosc() const
 {
     Macierz<TYP,ROZMIAR> M;
     Macierz<TYP,ROZMIAR> Jed;
-    TYP p;
+    TYP p, temp;
 
     if(this->Wyznacznik() == 0)
     {
@@ -238,15 +181,16 @@ Macierz<TYP,ROZMIAR> Macierz<TYP,ROZMIAR>::odwrotnosc() const
         exit(1);
     }
 
-    for(int i=0; i<ROZMIAR; i++)
+    for(int i=0; i<ROZMIAR; i++)    /* Tworzymy macierz jednostkową */
     {
         Jed[i][i] = 1;
     }
 
+    temp = 1;
     M = *this;
 
-    for(int i=0, x=ROZMIAR-1; i<ROZMIAR; i++, x--)
-    {
+    for(int i=0, x=ROZMIAR-1; i<ROZMIAR; i++, x--)      // Przekształcamy macierz wejściową M w macierz trójkątną górną, wykonując 
+    {                                                   // te same działania na macierzy jednostkowej Jed
         for(int j=0; j<x; j++)
         {   
             p = M[ROZMIAR-(j+1)][i]/M[i][i];
@@ -255,15 +199,16 @@ Macierz<TYP,ROZMIAR> Macierz<TYP,ROZMIAR>::odwrotnosc() const
         }
     }
 
-    for(int i=0; i<ROZMIAR; i++)
-    {
-        p = 1/M[i][i];
+    for(int i=0; i<ROZMIAR; i++)                        //W macierzy M przekształcam wartości po przekątnej dzielimy aby uzykać jeden
+    {                                                   //Dla macierzy Jed wykonujemy dokładniei te same działania co dla M
+        p = temp/M[i][i];
         M[i] = M[i] * p;
         Jed[i] = Jed[i] * p;
     }
 
-    for(int i=0, x=ROZMIAR-1; i<ROZMIAR; i++, x--)
-    {
+
+    for(int i=0, x=ROZMIAR-1; i<ROZMIAR; i++, x--)      //Przekształacmy macierz wejściową w macierz diagonalizowaną 
+    {                                                   //Dla macierzy Jed wykonujemy te same działania co dla M
         for(int j=0; j<x; j++)
         {   
             p = M[j][ROZMIAR-(i+1)]/M[ROZMIAR-(i+1)][ROZMIAR-(i+1)];
@@ -422,7 +367,7 @@ std::ostream& operator << (std::ostream &Strm, const Macierz<TYP,ROZMIAR> &Mac)
 {   
     Macierz<TYP,ROZMIAR> M;
     M = Mac.transpozycja2();
-
+    
     for(int i=0; i<ROZMIAR; i++)
     {
         Strm << M[i] << std::endl;
@@ -434,12 +379,6 @@ std::ostream& operator << (std::ostream &Strm, const Macierz<TYP,ROZMIAR> &Mac)
 template class Macierz<double,5>;
 template std::istream& operator >> (std::istream &Strm, Macierz<double,5> &Mac);
 template std::ostream& operator << (std::ostream &Strm, const Macierz<double,5>  &Mac);
-template class Macierz<double,3>;
-template std::istream& operator >> (std::istream &Strm, Macierz<double,3> &Mac);
-template std::ostream& operator << (std::ostream &Strm, const Macierz<double,3>  &Mac);
-template class Macierz<double,4>;
-template std::istream& operator >> (std::istream &Strm, Macierz<double,4> &Mac);
-template std::ostream& operator << (std::ostream &Strm, const Macierz<double,4>  &Mac);
 template class Macierz<LZespolona,5>;
 template std::istream& operator >> (std::istream &Strm, Macierz<LZespolona,5> &Mac);
 template std::ostream& operator << (std::ostream &Strm, const Macierz<LZespolona,5>  &Mac);

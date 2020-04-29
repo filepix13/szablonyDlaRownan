@@ -22,38 +22,6 @@ Wektor<TYP,ROZMIAR>::Wektor()
 
 
 /* 
-    Konstuktor parametryczny zmiennej Wektor
-    Argumenty:
-        this
-        x, y, z - wartości podstawiane pod odpowiednie miejsca tabeli dane
-    Zwraca:
-        this
-*/
-template<class TYP, int ROZMIAR>
-Wektor<TYP,ROZMIAR>::Wektor(TYP Ntab[]) 
-{
-    for (int i=0;i<ROZMIAR;i++) 
-    {
-      dane[i] = Ntab[i];
-    }
-}
-
-
-/* 
-    Funkcja ta oblicza długość wektora
-    Argumenty:
-        this
-    Zwraca:
-        dlugosc - długość wektora
-*/
-/*template<class TYP, int ROZMIAR>
-double Wektor<TYP,ROZMIAR>::dlugosc() const
-{
-    return sqrt(*this * *this);
-}*/
-
-
-/* 
     Funkcja ta dodaje dwa wektory
     Argumenty:
         this
@@ -118,27 +86,23 @@ TYP Wektor<TYP,ROZMIAR>::operator * (const Wektor & W2) const
     return d;
 }
 
+
+/* 
+    Funkcja ta mnoży elementy wektora przez liczbę
+    Argumenty:
+        this
+        t - liczba przez którą mnożymy
+    Zwraca:
+        Wektor pomnozony przez liczbę
+*/
 template<class TYP, int ROZMIAR>
-Wektor<TYP,ROZMIAR> Wektor<TYP,ROZMIAR>::operator * (double d) const
+Wektor<TYP,ROZMIAR> Wektor<TYP,ROZMIAR>::operator * (TYP t) const
 {
     Wektor W;
 
     for(int i=0; i<ROZMIAR; i++)
     {
-        W[i] = dane[i] * d;
-    }
-
-    return W;
-}
-
-template<>
-Wektor<LZespolona,5> Wektor<LZespolona,5>::operator * (LZespolona Z) const
-{
-    Wektor<LZespolona, 5> W;
-
-    for(int i=0; i<5; i++)
-    {
-        W[i] = dane[i] * Z;
+        W[i] = dane[i] * t;
     }
 
     return W;
@@ -233,12 +197,6 @@ std::ostream& operator << (std::ostream &Strm, const Wektor<TYP,ROZMIAR> & Wek)
 template class Wektor<double,5>;
 template std::istream& operator >> (std::istream &Strm, Wektor<double,5> &Wek);
 template std::ostream& operator << (std::ostream &Strm, const Wektor<double,5> & Wek);
-template class Wektor<double,3>;
-template std::istream& operator >> (std::istream &Strm, Wektor<double,3> &Wek);
-template std::ostream& operator << (std::ostream &Strm, const Wektor<double,3> & Wek);
-template class Wektor<double,4>;
-template std::istream& operator >> (std::istream &Strm, Wektor<double,4> &Wek);
-template std::ostream& operator << (std::ostream &Strm, const Wektor<double,4> & Wek);
-/*template class Wektor<LZespolona,5>;
+template class Wektor<LZespolona,5>;
 template std::istream& operator >> (std::istream &Strm, Wektor<LZespolona,5> &Wek);
-template std::ostream& operator << (std::ostream &Strm, const Wektor<LZespolona,5> & Wek);*/
+template std::ostream& operator << (std::ostream &Strm, const Wektor<LZespolona,5> & Wek);

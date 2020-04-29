@@ -19,12 +19,6 @@ class Wektor
 
   //Deklaracja konstruktora
   Wektor();
-  
-  //Deklaracja konstruktora parametrycznego
-  Wektor(TYP Ntab[]);
-
-  //Deklaracja funkcji obliczającej długość wektora 
-  //double dlugosc() const;
 
   //Deklaracja funkcji dodającej dwa wektory
   Wektor operator + (const Wektor & W2) const;
@@ -35,9 +29,8 @@ class Wektor
   //Deklaracja funckji obliczającej iloczyn skalarny dwóch wektorów
   TYP operator * (const Wektor & W2) const;
 
-  Wektor operator * (double d) const;
-
-  Wektor operator * (LZespolona Z) const;
+  //Deklaracja funkcji mnożącej poszczególne elementy wektora przez liczbę
+  Wektor operator * (TYP t) const;
 
   //Deklaracja przeciążenia funkcji indeksującej
   const TYP & operator [] (int indeks) const;

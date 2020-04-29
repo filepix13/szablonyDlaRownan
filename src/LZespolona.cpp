@@ -1,14 +1,32 @@
 #include "LZespolona.hh"
 #include <cmath>
+#define Epsilon 3.17207e-15
 
 
+
+/*!
+ * Przypisuje wartość części rzeczywistej, cześć urojona jest równa 0.
+ * Argumenty:
+ *    this
+ * Zwraca:
+ *    zmienione this
+ */
 LZespolona LZespolona::operator = (double a)
 {
   re = a;
-  im = a;
+  im = 0;
   return *this;
 }
 
+
+/*!
+ * Dodaje liczby zespolone 
+ * Argumenty:
+ *    this - liczba zespolona do której dodajemy
+ *    Z - liczba zespolona którą dodajemy
+ * Zwraca:
+ *    this zsumowane z liczbą zespoloną
+ */
 LZespolona LZespolona::operator += (LZespolona Z)
 {
   re = re + Z.re;
@@ -17,36 +35,60 @@ LZespolona LZespolona::operator += (LZespolona Z)
   return *this;
 }
 
-LZespolona LZespolona::operator * (double d)
-{
-  re = re * d;
-  im = im * d;
-  return *this;
+
+/*!
+ * Mnożymy liczbę zespoloną z liczbą rzeczywistą
+ * Argumenty:
+ *    this - liczba zespolona
+ *    d - liczba rzeczywista
+ * Zwraca:
+ *    this pomnożone o liczbę rzeczywistą
+ */
+LZespolona LZespolona::operator * (double d) const
+{ 
+  LZespolona Z;
+  Z.re = re * d;
+  Z.im = im * d;
+  return Z;
 }
 
+
+/*!
+ * Mnożymy dwie liczby zespolone
+ * Argumenty:
+ *    this - liczba zespolona do którą mnożymy
+ *    Z - liczba zespolona o którą mnożymy
+ * Zwraca:
+ *    this iloczyn liczb zespolonych
+ */
 LZespolona LZespolona::operator *= (LZespolona Z)
 {
-  re = re * Z.re;
-  im = im * Z.im;
+  double temp;
+
+  temp = re;
+  re = re * Z.re - im * Z.im;
+  im = temp * Z.im + im * Z.re; 
 
   return *this;
 }
 
+
+/*!
+ * Prównywanie liczby zespolonej z liczbą rzeczywistą z pewnym marginesem błędu (Epsilon)
+ * Argumenty:
+ *    this - liczba zespolona
+ *    d liczba rzeczywista
+ * Zwraca:
+ *    true lub false
+ */
 bool LZespolona::operator == (double d)
 {
-  if(re == d && im == d)
+  if(abs(re) < Epsilon && abs(im) < Epsilon)
     return true;
   else
     return false;
 }
 
-
-LZespolona operator / (double d, LZespolona Z)
-{
-  Z.re = d/Z.re;
-  Z.im = d/Z.im;
-  return Z;
-}
 
 /*!
  * Realizuje sprzężenie liczby zespolonej.
@@ -213,10 +255,9 @@ LZespolona  operator / (LZespolona  Skl1,  LZespolona  Skl2)
   a = Sprzezenie(Skl2);
   b = Modul2(Skl2);
 
-  Wynik.re = (Skl1.re*a.re);
-  Wynik.im = (Skl1.im*a.im);
+  Wynik = Skl1 * a;
 
-  Wynik = Wynik/b;
+  Wynik = Wynik/pow(b,2);
 
   return Wynik;
 }
