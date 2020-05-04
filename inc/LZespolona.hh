@@ -32,6 +32,9 @@ struct  LZespolona {
   //Deklaracja funkcji mnożącej liczby zepolone
   LZespolona operator *= (LZespolona Z);
 
+  //Deklaracja funkcji porównującej dwie liczby zespolone(const)
+  bool operator == (double d) const;
+
   //Deklaracja funkcji porównującej dwie liczby zespolone
   bool operator == (double d);
 

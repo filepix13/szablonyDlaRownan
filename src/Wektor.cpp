@@ -110,6 +110,25 @@ Wektor<TYP,ROZMIAR> Wektor<TYP,ROZMIAR>::operator * (TYP t) const
 
 
 /* 
+    Funkcja ta zamienia dwie liczby wektora
+    Argumenty:
+        this
+        x - indeks pierwszej liczby którą zamieniamy
+        y - indeks drugiej liczby którą zamieniamy
+    Zwraca:
+        brak`
+*/
+template<class TYP, int ROZMIAR>
+void Wektor<TYP,ROZMIAR>::zamiana(int x, int y)
+{
+    TYP temp;
+    temp = dane[x];
+    dane[x] = dane[y];
+    dane[y] = temp;
+}
+
+
+/* 
     Funkcja ta przeciąża operator indeksujący
     Argumenty:
         this
@@ -193,6 +212,7 @@ std::ostream& operator << (std::ostream &Strm, const Wektor<TYP,ROZMIAR> & Wek)
 
     return Strm;
 }
+
 
 template class Wektor<double,5>;
 template std::istream& operator >> (std::istream &Strm, Wektor<double,5> &Wek);

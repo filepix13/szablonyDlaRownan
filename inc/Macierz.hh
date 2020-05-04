@@ -48,7 +48,8 @@ class Macierz
   //Deklaracja funkcji mnożącej dwie macierze 
   Macierz operator * (const Macierz & M) const;
 
-  //void swap (Wektor<TYP,ROZMIAR>& a, Wektor<TYP,ROZMIAR>& b);
+  //Deklaracja funkcji zamieniającej dwa wiersze macierzy
+  void zamiana (int x, int y);
 
   //Deklaracja funkcji mnożącej macierz i wektor
   Wektor<TYP,ROZMIAR> operator * (const Wektor<TYP,ROZMIAR> & W) const;  

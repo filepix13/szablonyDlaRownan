@@ -1,7 +1,7 @@
 #
 #  To sa opcje dla kompilacji
 #
-CPPFLAGS= -c -g -Iinc -Wall -pedantic
+CPPFLAGS= -c -g -Iinc -Wall -pedantic -std=c++17
 
 __start__: uklad_rownan
 	./uklad_rownan

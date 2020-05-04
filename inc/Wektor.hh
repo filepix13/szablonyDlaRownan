@@ -32,6 +32,9 @@ class Wektor
   //Deklaracja funkcji mnożącej poszczególne elementy wektora przez liczbę
   Wektor operator * (TYP t) const;
 
+  //Deklaracja funkcji zamieniającej dwie liczby wektora
+  void zamiana (int x, int y);
+
   //Deklaracja przeciążenia funkcji indeksującej
   const TYP & operator [] (int indeks) const;
 

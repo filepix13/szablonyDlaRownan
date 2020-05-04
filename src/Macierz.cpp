@@ -136,21 +136,27 @@ Macierz<TYP,ROZMIAR> Macierz<TYP,ROZMIAR>::transpozycja2() const
 template<class TYP, int ROZMIAR>
 TYP Macierz<TYP,ROZMIAR>::Wyznacznik() const
 {
+    int z;
     TYP d;
     Macierz<TYP,ROZMIAR> M;
 
-    d = 1;
+    z = 0;
     M = *this;
 
     for(int i=0, x=ROZMIAR-1; i<ROZMIAR; i++, x--)  /* Przekształcamy macierz, w macierz trójkątną górną */
     {   
         for(int j=0; j<x; j++)
         {
-            //if(M[i][i])
-                //swap(M[ROZMIAR-(j+1)], M[i]);
+            if(M[i][i] == 0)                        //Chroni przed dzieleniem przez 0, zamienia wiersze w macierzy
+            {                                       
+                M.zamiana(ROZMIAR-(j+1), i);
+                z++;                                
+            }
             M[ROZMIAR-(j+1)] = M[ROZMIAR-(j+1)] - M[i] * (M[ROZMIAR-(j+1)][i]/M[i][i]);
         }
     }
+
+    d = pow(-1, z);                                 //W zależności od ilości zamian wierszy, zmienia znak wyznacznika
 
     for(int i=0; i<ROZMIAR; i++)    /* Obliczamy wyznacznik mnożąc liczby po przekątnej*/
     {
@@ -175,12 +181,6 @@ Macierz<TYP,ROZMIAR> Macierz<TYP,ROZMIAR>::odwrotnosc() const
     Macierz<TYP,ROZMIAR> Jed;
     TYP p, temp;
 
-    if(this->Wyznacznik() == 0)
-    {
-        std::cerr << "Wyznacznik równy zero, brak możliwości obliczenia odwrotności" << std::endl << "Zamykanie programu...";
-        exit(1);
-    }
-
     for(int i=0; i<ROZMIAR; i++)    /* Tworzymy macierz jednostkową */
     {
         Jed[i][i] = 1;
@@ -193,6 +193,12 @@ Macierz<TYP,ROZMIAR> Macierz<TYP,ROZMIAR>::odwrotnosc() const
     {                                                   // te same działania na macierzy jednostkowej Jed
         for(int j=0; j<x; j++)
         {   
+            if(M[i][i] == 0)                            //Chroni przed dzieleniem przez 0, zamienia wiersze w obu macierzach
+            {                                           
+                M.zamiana(ROZMIAR-(j+1), i);
+                Jed.zamiana(ROZMIAR-(j+1), i);
+            }
+
             p = M[ROZMIAR-(j+1)][i]/M[i][i];
             M[ROZMIAR-(j+1)] = M[ROZMIAR-(j+1)] - M[i] * p;
             Jed[ROZMIAR-(j+1)] = Jed[ROZMIAR-(j+1)] - Jed[i] * p;
@@ -323,14 +329,24 @@ Wektor<TYP,ROZMIAR> Macierz<TYP,ROZMIAR>::operator * (const Wektor<TYP,ROZMIAR> 
     return Wek;
 }
 
-/*template<class TYP, int ROZMIAR>
-void Macierz<TYP,ROZMIAR>::swap(Wektor<TYP,ROZMIAR> &a, Wektor<TYP,ROZMIAR> &b)
+
+/* 
+    Funkcja ta zamienia dwa wiersze macierzy
+    Argumenty:
+        this
+        x - indkes pierszego wiersza do zamiany
+        y - indeks drugiego wiersza do zamiany
+    Zwraca:
+        brak
+*/
+template<class TYP, int ROZMIAR>
+void Macierz<TYP,ROZMIAR>::zamiana(int x, int y)
 {
     Wektor<TYP,ROZMIAR> temp;
-    temp = a;
-    a = b;
-    b = temp;
-}*/
+    temp = tab[x];
+    tab[x] = tab[y];
+    tab[y] = temp;
+}
 
 
 /* 
@@ -375,6 +391,7 @@ std::ostream& operator << (std::ostream &Strm, const Macierz<TYP,ROZMIAR> &Mac)
     
     return Strm; 
 }
+
 
 template class Macierz<double,5>;
 template std::istream& operator >> (std::istream &Strm, Macierz<double,5> &Mac);

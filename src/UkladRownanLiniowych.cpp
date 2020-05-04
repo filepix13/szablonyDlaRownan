@@ -38,6 +38,12 @@ Wektor<TYP,ROZMIAR> UkladRownanLiniowych<TYP,ROZMIAR>::Oblicz() const
     {                                                   // te same działania na wektorze W
         for(int j=0; j<x; j++)
         {   
+            if(M[i][i] == 0)                            //Chroni przed dzieleniem przez 0, zamienia wiersze w macierzy
+            {                                           //oraz liczby w wektorze                                        
+                M.zamiana(ROZMIAR-(j+1), i);            
+                W.zamiana(ROZMIAR-(j+1), i);
+            }
+
             p = M[ROZMIAR-(j+1)][i]/M[i][i];
             M[ROZMIAR-(j+1)] = M[ROZMIAR-(j+1)] - M[i] * p;
             W[ROZMIAR-(j+1)] = W[ROZMIAR-(j+1)] - W[i] * p;

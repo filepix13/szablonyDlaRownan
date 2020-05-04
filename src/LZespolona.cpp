@@ -74,6 +74,23 @@ LZespolona LZespolona::operator *= (LZespolona Z)
 
 
 /*!
+ * Prównywanie liczby zespolonej z liczbą rzeczywistą z pewnym marginesem błędu (Epsilon) (const)
+ * Argumenty:
+ *    this - liczba zespolona
+ *    d liczba rzeczywista
+ * Zwraca:
+ *    true lub false
+ */
+bool LZespolona::operator == (double d) const
+{
+  if(abs(re) < Epsilon && abs(im) < Epsilon)
+    return true;
+  else
+    return false;
+}
+
+
+/*!
  * Prównywanie liczby zespolonej z liczbą rzeczywistą z pewnym marginesem błędu (Epsilon)
  * Argumenty:
  *    this - liczba zespolona
